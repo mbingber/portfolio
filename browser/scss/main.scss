@@ -43,6 +43,12 @@ img {
   justify-content: center;
 }
 
+#dreamCanvas, .kleinCanvas, .torusCanvas, #gravityCanvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 
 @import 'forceDirection/main';
 @import 'gravity/main';

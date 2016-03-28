@@ -5,6 +5,7 @@ $(document).ready(function() {
 
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
+    $(renderer.domElement).addClass('torusCanvas');
     $('#main')[0].appendChild( renderer.domElement );
 
     var a = 3, c = 4;

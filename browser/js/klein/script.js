@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
-
+    $(renderer.domElement).addClass('kleinCanvas');
     $('#main')[0].appendChild( renderer.domElement );
 
     var geometry = new THREE.ParametricGeometry(function(u,v) {

@@ -24,7 +24,7 @@
             <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="deselectAll()">Deselect All</button>
         </div>
         <div class="row button-row">
-            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="g.connectSelected()">Connect</button>
+            <button class="btn btn-default" ng-disabled="numSelected() <= 1" ng-click="g.connectSelected()">Connect</button>
             <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="g.removeVertices()">Remove</button>
         </div>
         <div class="row button-row">
