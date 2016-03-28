@@ -1,0 +1,6 @@
+<div class="tile {{name}}">
+    <a href="{{ href() }}">
+        <img ng-mouseover="showTitle()" ng-mouseleave="removeTitle()" ng-src="{{src()}}">
+    </a>
+    <div class="title" ng-show="show"><strong>{{title}}</strong></div>
+</div>

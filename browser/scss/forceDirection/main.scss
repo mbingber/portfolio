@@ -1,7 +1,7 @@
 #home {
   .sidebar {
     background-color: #eee;
-    height: 75vh;
+    height: 90vh;
     margin-bottom: 5vh;
   }
 
@@ -16,10 +16,10 @@
     z-index: 1;
   }
   .graph-border {
-    height: 75vh;
+    height: 90vh;
     background-color: #555;
-    margin-bottom: 5vh;
     padding: 25px;
+    margin-bottom: 5vh;
   }
   .graph {
     background-color: #555;
@@ -40,6 +40,27 @@
     background-color: green;
     position: absolute;
     z-index: 0;
+  }
+
+  .force {
+    width: 80%;
+    height: 100px;
+    margin: auto;
+    font-size: 20px;
+  }
+
+  .force-start {
+    background-color: green;
+  }
+
+  .force-stop {
+    background-color: red;
+  }
+
+  .button-row {
+    margin: 20px auto;
+    width: 100%;
+    text-align: center;
   }
 }
 

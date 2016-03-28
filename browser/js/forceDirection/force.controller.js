@@ -19,6 +19,10 @@ app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, 
         $scope.g.vertices.forEach(vertex => vertex.selected = false);
     }
 
+    $scope.numSelected = function() {
+        return $scope.g.vertices.filter(v => v.selected).length;
+    }
+
     var l = 0, r = 1, t = 0, b = 1;
     $scope.getVertexPos = function(vertex, noPx) {
         var left = (vertex.x - l)/(r-l)*$scope.graphWidth;
@@ -66,7 +70,7 @@ app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, 
         int = $interval(function() {
             $scope.g.step(h,c);
             $scope.normalize();
-        }, 20);
+        }, 25);
     }
 
     $scope.stop = function() {

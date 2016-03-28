@@ -15,18 +15,25 @@
         </div>
     </div>
     <div class="col-xs-3 sidebar">
-        <div class="row">
+        <div class="row button-row">
             <button class="btn btn-default" ng-click="addVertex()">Add a vertex</button>
-            <button class="btn btn-default" ng-click="g.removeVertices()">Remove selected</button>
         </div>
-        <div class="row">
-            <button class="btn btn-default" ng-click="selectAll()">Select All</button>
-            <button class="btn btn-default" ng-click="deselectAll()">Deselect All</button>
+        <p class="button-row" ng-show="g.vertices.length">You can click on a vertex to select it</p>
+        <div class="row button-row">
+            <button class="btn btn-default" ng-disabled="numSelected() === g.vertices.length" ng-click="selectAll()">Select All</button>
+            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="deselectAll()">Deselect All</button>
         </div>
-        <button class="btn btn-default" ng-click="g.connectSelected()">Connect selected</button>
-        <button class="btn btn-default" ng-click="normalize()">Normalize</button>
-        <button class="btn btn-default" ng-click="g.step(.05, .4)">Step</button>
-        <button class="btn btn-default" ng-hide="playing" ng-click="useTheForce(.002, .001)">Use The Force</button>
-        <button class="btn btn-default" ng-show="playing" ng-click="stop()">Stop</button>
+        <div class="row button-row">
+            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="g.connectSelected()">Connect</button>
+            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="g.removeVertices()">Remove</button>
+        </div>
+        <div class="row button-row">
+            <button ng-disabled="!g.vertices.length" class="btn btn-default force force-start" ng-hide="playing" ng-click="useTheForce(.002, .001)">Use The Force</button>
+            <button class="btn btn-default force force-stop" ng-show="playing" ng-click="stop()">Stop</button>
+        </div>
+        <div class="row button-row">
+            <button ng-disabled="g.vertices.length <= 1" class="btn btn-default" ng-click="g.step(.05, .4)">Step</button>
+            <button ng-disabled="g.vertices.length <= 1" class="btn btn-default" ng-click="normalize()">Normalize</button>
+        </div>
     </div>
 </section>
