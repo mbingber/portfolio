@@ -1,0 +1,32 @@
+<section class="container" id="home">
+    <div class="graph-border col-xs-9">
+        <div class="graph">
+            <div
+            ng-repeat="vertex in g.vertices"
+            ng-style="getVertexPos(vertex)"
+            class="vertex" ng-class="{selected: vertex.selected}"
+            ng-click="vertex.select()">
+            {{$index}}
+            </div>
+            <div
+            ng-repeat="edge in g.edges"
+            class="edge"
+            ng-style="getEdgePos(edge)"></div>
+        </div>
+    </div>
+    <div class="col-xs-3 sidebar">
+        <div class="row">
+            <button class="btn btn-default" ng-click="addVertex()">Add a vertex</button>
+            <button class="btn btn-default" ng-click="g.removeVertices()">Remove selected</button>
+        </div>
+        <div class="row">
+            <button class="btn btn-default" ng-click="selectAll()">Select All</button>
+            <button class="btn btn-default" ng-click="deselectAll()">Deselect All</button>
+        </div>
+        <button class="btn btn-default" ng-click="g.connectSelected()">Connect selected</button>
+        <button class="btn btn-default" ng-click="normalize()">Normalize</button>
+        <button class="btn btn-default" ng-click="g.step(.05, .4)">Step</button>
+        <button class="btn btn-default" ng-hide="playing" ng-click="useTheForce(.002, .001)">Use The Force</button>
+        <button class="btn btn-default" ng-show="playing" ng-click="stop()">Stop</button>
+    </div>
+</section>

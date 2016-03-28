@@ -1,0 +1,13 @@
+#myCanvas {
+    background-color: white;
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#overlay {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+}

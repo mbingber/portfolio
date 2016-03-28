@@ -1,0 +1,45 @@
+#home {
+  .sidebar {
+    background-color: #eee;
+    height: 75vh;
+    margin-bottom: 5vh;
+  }
+
+  .vertex {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    border: 2px solid black;
+    border-radius: 50%;
+    text-align: center;
+    background-color: white;
+    z-index: 1;
+  }
+  .graph-border {
+    height: 75vh;
+    background-color: #555;
+    margin-bottom: 5vh;
+    padding: 25px;
+  }
+  .graph {
+    background-color: #555;
+    height: 100%;
+  }
+
+  h1 {
+    margin-top: 40px;
+    text-align: center;
+  }
+
+  .selected {
+    background-color: blue;
+  }
+
+  .edge {
+    height: 5px;
+    background-color: green;
+    position: absolute;
+    z-index: 0;
+  }
+}
+
