@@ -112,7 +112,11 @@ gulp.task('buildCSSProduction', function () {
 });
 
 gulp.task('buildJSProduction', function () {
-    return gulp.src(['./browser/js/app.js', './browser/js/**/*.js'])
+    return gulp.src(['./browser/js/app.js', './browser/js/**/*.js',
+        '!./browser/js/gravity/script.js', '!./browser/js/dreamweaver/script.js',
+        '!./browser/js/mandelbrot/script.js', '!./browser/js/klein/script.js',
+        '!./browser/js/mathUtils.js', '!./browser/js/orbit-controls.js',
+        '!./browser/js/torus/script.js'])
         .pipe(concat('main.js'))
         .pipe(babel())
         .pipe(ngAnnotate())
