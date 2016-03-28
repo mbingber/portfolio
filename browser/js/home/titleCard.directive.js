@@ -29,7 +29,7 @@ app.directive('titleCard', function($state) {
             }
 
             scope.src = function() {
-                return `/img/${scope.name}.png`;
+                return `https://s3.amazonaws.com/mikeingberportfolio/${scope.name}.png`;
             }
 
         }
