@@ -31,9 +31,5 @@
             <button ng-disabled="!g.vertices.length" class="btn btn-default force force-start" ng-hide="playing" ng-click="useTheForce(.002, .001)">Use The Force</button>
             <button class="btn btn-default force force-stop" ng-show="playing" ng-click="stop()">Stop</button>
         </div>
-        <div class="row button-row">
-            <button ng-disabled="g.vertices.length <= 1" class="btn btn-default" ng-click="g.step(.05, .4)">Step</button>
-            <button ng-disabled="g.vertices.length <= 1" class="btn btn-default" ng-click="normalize()">Normalize</button>
-        </div>
     </div>
 </section>

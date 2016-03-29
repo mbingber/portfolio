@@ -2,9 +2,6 @@ $(document).ready(function() {
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    // var canvas = document.getElementById('canvasID');
-    // var renderer = new THREE.WebGLRenderer({canvas: canvas});
-
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     $(renderer.domElement).addClass('kleinCanvas');
@@ -28,10 +25,6 @@ $(document).ready(function() {
     camera.position.copy(position);
 
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-    $(document).keypress(function(e) {
-        console.log(camera);
-    });
 
     function animate() {
 
