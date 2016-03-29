@@ -41,13 +41,11 @@ $(document).ready(function() {
     function Tangent(u,v,udot,vdot) {
         var x = -rhoT(u,v)*sin(2*pi*u)*udot - a*sin(2*pi*v)*cos(2*pi*u)*vdot;
         var y = rhoT(u,v)*cos(2*pi*u)*udot - a*sin(2*pi*v)*sin(2*pi*u)*vdot;
-        // var rho = -vdot*a*sin(2*pi*v);
-        // var phi = udot;
         var z = vdot*a*cos(2*pi*v);
         return VectorCart(x, y, z);
     }
 
-    var geometry = new THREE.ParametricGeometry(ParametricTorus, 150, 150);
+    var geometry = new THREE.ParametricGeometry(ParametricTorus, 100, 100);
 
     var surfaceMaterial = new THREE.MeshNormalMaterial( { wireframe: true } );
     var surface = new THREE.Mesh( geometry, surfaceMaterial );
@@ -67,7 +65,7 @@ $(document).ready(function() {
         camera.lookAt(toLook);
     }
 
-    var u = Math.random(), v = Math.random(), udot = Math.random()/600, vdot = 1.25/400;
+    var u = Math.random(), v = Math.random(), udot = Math.random()/1000, vdot = 1.25/400;
 
     setCameraStuff(u,v,udot,vdot);
 

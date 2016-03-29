@@ -13,7 +13,7 @@ $(document).ready(function() {
     var geometry = new THREE.ParametricGeometry(function(u,v) {
         u = pi*u, v = 2*pi*v;
         var x = -2/15*cos(u)*(3*cos(v) - 30*sin(u) + 90*sin(u)*Math.pow(cos(u), 4) - 60*sin(u)*Math.pow(cos(u), 6) + 5*cos(u)*sin(u)*cos(v));
-        var y = -1/15*sin(u)*(3*cos(v) - 3*Math.pow(cos(u),2)*cos(v) - 48*Math.pow(cos(u), 4)*cos(v) + 48*Math.pow(cos(u), 6)*cos(v) - 60*sin(u) + 5*cos(u)*sin(u)*cos(v) - 5*Math.pow(cos(u),3)*sin(u)*cos(v) - 80*Math.pow(cos(u),5)*sin(u)*cos(v) + 80*Math.pow(cos(u),7)*sin(u)*cos(v));
+        var y = -2-1/15*sin(u)*(3*cos(v) - 3*Math.pow(cos(u),2)*cos(v) - 48*Math.pow(cos(u), 4)*cos(v) + 48*Math.pow(cos(u), 6)*cos(v) - 60*sin(u) + 5*cos(u)*sin(u)*cos(v) - 5*Math.pow(cos(u),3)*sin(u)*cos(v) - 80*Math.pow(cos(u),5)*sin(u)*cos(v) + 80*Math.pow(cos(u),7)*sin(u)*cos(v));
         var z = 2/15*(3 + 5*sin(u)*cos(u))*sin(v);
         return VectorCart(x,y,z);
     }, 100, 100);
@@ -22,12 +22,16 @@ $(document).ready(function() {
 
     scene.add( surface );
 
-    var r = 4, th = pi/4, phi = pi;
-    var position = VectorSph(r,th,phi);
+    var x = 1.5, y = 0, z = -3.5;
+
+    var position = VectorCart(x,y,z);
     camera.position.copy(position);
 
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
+    $(document).keypress(function(e) {
+        console.log(camera);
+    });
 
     function animate() {
 
