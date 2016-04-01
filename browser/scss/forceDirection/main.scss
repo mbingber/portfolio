@@ -1,3 +1,5 @@
+$darkgrey: #555;
+
 #home {
   .sidebar {
     background-color: #eee;
@@ -9,7 +11,7 @@
     position: absolute;
     height: 50px;
     width: 50px;
-    border: 2px solid black;
+    border: 3px solid $darkgrey;
     border-radius: 50%;
     text-align: center;
     background-color: white;
@@ -23,12 +25,12 @@
   }
   .graph-border {
     height: 90vh;
-    background-color: #555;
+    background-color: $darkgrey;
     padding: 25px;
     margin-bottom: 5vh;
   }
   .graph {
-    background-color: #555;
+    background-color: $darkgrey;
     height: 100%;
   }
 
@@ -44,34 +46,50 @@
 
   .edge {
     height: 5px;
-    background-color: green;
+    background-color: #07F717;
     position: absolute;
     z-index: 0;
   }
 
   .force {
-    width: 80%;
-    height: 100px;
     margin: auto;
-    font-size: 20px;
+    width: 82%;
+    border: none;
   }
 
   .force-start {
-    background-color: green;
+    background-color: #07F717;
+    color: $darkgrey;
   }
 
   .force-stop {
     background-color: red;
+    color: white;
   }
 
   .button-row {
-    margin: 20px auto;
-    width: 100%;
+    margin: 15px auto;
+    width: 90%;
     text-align: center;
+  }
+
+  .btn-default {
+    width: 40%;
   }
 
   .presets {
     font-size: 20px;
+    height: 100%;
   }
+
+  h5 {
+    margin-top: 20px;
+  }
+
+  li {
+    padding-left: 20px;
+    cursor: pointer;
+  }
+
 }
 

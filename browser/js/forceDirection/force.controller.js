@@ -101,7 +101,7 @@ app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, 
         label: 'Star',
         gen: makeStar
     }, {
-        label: 'Connected Boxes',
+        label: 'Adjacent Boxes',
         gen: makeConnectedBoxes
     }];
 
