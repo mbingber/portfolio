@@ -6,7 +6,7 @@
             ng-style="getVertexPos(vertex)"
             class="vertex" ng-class="{selected: vertex.selected}"
             ng-click="vertex.select()">
-            {{$index}}
+            <p class="num">{{$index}}</p>
             </div>
             <div
             ng-repeat="edge in g.edges"
@@ -15,10 +15,12 @@
         </div>
     </div>
     <div class="col-xs-3 sidebar">
+        <div class="button-row presets">
+            <select ng-model="chosenPreset" ng-options="preset as preset.label for preset in presets" ng-change="chosenPreset.gen()"><option disabled value="">Presets</option></select>
+        </div>
         <div class="row button-row">
             <button class="btn btn-default" ng-click="addVertex()">Add a vertex</button>
         </div>
-        <p class="button-row" ng-show="g.vertices.length">You can click on a vertex to select it</p>
         <div class="row button-row">
             <button class="btn btn-default" ng-disabled="numSelected() === g.vertices.length" ng-click="selectAll()">Select All</button>
             <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="deselectAll()">Deselect All</button>
@@ -28,8 +30,10 @@
             <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="g.removeVertices()">Remove</button>
         </div>
         <div class="row button-row">
-            <button ng-disabled="!g.vertices.length" class="btn btn-default force force-start" ng-hide="playing" ng-click="useTheForce(.002, .001)">Use The Force</button>
+            <button ng-disabled="!g.vertices.length" class="btn btn-default force force-start" ng-hide="playing" ng-click="useTheForce(.003, .0015)">Use The Force</button>
             <button class="btn btn-default force force-stop" ng-show="playing" ng-click="stop()">Stop</button>
         </div>
+        <p>Instructions:</p><p>Choose a preset, customize your own graph structure, or use a combination!</p><p>Connect/Remove will affect all selected vertices, and individual vertices can be selected by clicking.</p><p>Hit Use The Force to watch your graph morph into alignment, all by the power of physics!</p>
+
     </div>
 </section>

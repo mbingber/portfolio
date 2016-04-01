@@ -13,7 +13,13 @@
     border-radius: 50%;
     text-align: center;
     background-color: white;
+    font-size: 25px;
     z-index: 1;
+    cursor: pointer;
+  }
+
+  .num {
+    margin-top: 5px;
   }
   .graph-border {
     height: 90vh;
@@ -33,6 +39,7 @@
 
   .selected {
     background-color: blue;
+    color: white;
   }
 
   .edge {
@@ -61,6 +68,10 @@
     margin: 20px auto;
     width: 100%;
     text-align: center;
+  }
+
+  .presets {
+    font-size: 20px;
   }
 }
 

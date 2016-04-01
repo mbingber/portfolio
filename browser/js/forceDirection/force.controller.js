@@ -1,4 +1,4 @@
-app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, Edge, Graph, $interval) {
+app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, Edge, Graph, $interval, Presets) {
 
     function setDimensions() {
         var graphDiv = document.getElementsByClassName('graph')[0];
@@ -6,6 +6,7 @@ app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, 
         $scope.graphHeight = graphDiv.offsetHeight;
         $timeout();
     }
+
     angular.element(document).ready(setDimensions);
     angular.element($window).bind('resize', setDimensions);
 
@@ -77,5 +78,31 @@ app.controller('ForceCtrl', function($scope, $window, $timeout, Vector, Vertex, 
         $scope.playing = false;
         $interval.cancel(int);
     }
+
+    function makeLoop() {
+        $scope.g = Presets.loop(9);
+        $scope.normalize();
+    }
+
+    function makeStar() {
+        $scope.g = Presets.polygon(6);
+        $scope.normalize();
+    }
+
+    function makeConnectedBoxes() {
+        $scope.g = Presets.connectedBoxes();
+        $scope.normalize();
+    }
+
+    $scope.presets = [{
+        label: 'Loop',
+        gen: makeLoop
+    }, {
+        label: 'Star',
+        gen: makeStar
+    }, {
+        label: 'Connected Boxes',
+        gen: makeConnectedBoxes
+    }];
 
 })
