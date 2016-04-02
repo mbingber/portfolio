@@ -27,11 +27,10 @@
                 <li ng-repeat="preset in presets" ng-click="preset.gen()" role="menuitem">{{ preset.label }}</li>
               </ul>
             </div>
- <!--            <select class="presets" ng-model="chosenPreset" ng-options="preset as preset.label for preset in presets" ng-change="chosenPreset.gen()"><option disabled value="">Presets</option></select> -->
         </div>
         <div class="row button-row">
             <button class="btn btn-default" ng-disabled="numSelected() === g.vertices.length" ng-click="selectAll()">Select All</button>
-            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="deselectAll()">Deselect All</button>
+            <button class="btn btn-default" ng-disabled="!numSelected()" ng-click="deselectAll()">Deselect</button>
         </div>
         <div class="row button-row">
             <button class="btn btn-default" ng-disabled="numSelected() <= 1" ng-click="g.connectSelected()">Connect</button>

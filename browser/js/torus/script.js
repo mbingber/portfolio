@@ -45,7 +45,7 @@ $(document).ready(function() {
         return VectorCart(x, y, z);
     }
 
-    var geometry = new THREE.ParametricGeometry(ParametricTorus, 100, 100);
+    var geometry = new THREE.ParametricGeometry(ParametricTorus, 70, 70);
 
     var surfaceMaterial = new THREE.MeshNormalMaterial( { wireframe: true } );
     var surface = new THREE.Mesh( geometry, surfaceMaterial );
