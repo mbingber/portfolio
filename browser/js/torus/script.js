@@ -45,7 +45,7 @@ $(document).ready(function() {
         return VectorCart(x, y, z);
     }
 
-    var geometry = new THREE.ParametricGeometry(ParametricTorus, 70, 70);
+    var geometry = new THREE.ParametricGeometry(ParametricTorus, 60, 60);
 
     var surfaceMaterial = new THREE.MeshNormalMaterial( { wireframe: true } );
     var surface = new THREE.Mesh( geometry, surfaceMaterial );
@@ -57,7 +57,7 @@ $(document).ready(function() {
         var position = new THREE.Vector3();
         var normal = Normal(u,v);
         var tangent = Tangent(u,v,udot,vdot).normalize();
-        position.addVectors(point, normal.multiplyScalar(0.3));
+        position.addVectors(point, normal.multiplyScalar(0.1));
         camera.position.copy(position);
         camera.up.copy(normal);
         var toLook = new THREE.Vector3();
@@ -65,7 +65,7 @@ $(document).ready(function() {
         camera.lookAt(toLook);
     }
 
-    var u = Math.random(), v = Math.random(), udot = Math.random()/1000, vdot = 1.25/400;
+    var u = Math.random(), v = Math.random(), udot = .001 + Math.random()/1000, vdot = 1.25/400;
 
     setCameraStuff(u,v,udot,vdot);
 
