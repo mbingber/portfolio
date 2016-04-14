@@ -199,17 +199,6 @@ function onKeyDown(event) {
     }
 }
 
-//animation
-// var orbitPlanetR = 100;
-// var orbitPlanetX = view.center;
-// var orbitPlanet = placePlanet(orbitPlanetX, orbitPlanetR);
-
-// var orbitSatX = new Point(view.center.x + 3 * orbitPlanetR, view.center.y);
-// var orbitSatSpeed = Math.sqrt(G*orbitPlanet.mass/(orbitSatX.length));
-// var orbitSatV = new Point(0, orbitSatSpeed)
-
-// placeSatellite(orbitSatX, orbitSatV);
-
 function onFrame(event) {
     satellites.forEach(function(satellite) {
         satellite.position += satellite.velocity*speedModulo;

@@ -16,7 +16,6 @@ $(document).ready(function() {
     o.canvas.height = window.innerHeight;
     o.globalAlpha = 0.5;
     o.fillStyle = '#eee';
-    // o.fillRect(20,20,100,100)
 
 
     var left = -2;
@@ -26,6 +25,13 @@ $(document).ready(function() {
     var pixel1 = [0,0];
     var point1;
     var makeOverlay = false;
+    var oldDims = [];
+    oldDims.push({
+        left: left,
+        right: right,
+        top: top,
+        bottom: bottom
+    });
 
     // create a new pixel array
     var imageData = c.createImageData(width, height);
@@ -39,21 +45,40 @@ $(document).ready(function() {
     });
 
     overlay.addEventListener('mousemove', function(event) {
-        if (makeOverlay) setOverlay(o, pixel1, [event.pageX, event.pageY])
+        if (makeOverlay) setOverlay(o, pixel1, [event.pageX, event.pageY], width, height);
     })
 
     overlay.addEventListener('mouseup', function(event) {
         var point2 = getXY(event.pageX, event.pageY, width, height, left, right, top, bottom);
+        oldDims.push({
+            left: left,
+            right: right,
+            top: top,
+            bottom: bottom
+        });
         left = Math.min(point1[0], point2[0]);
         right = Math.max(point1[0], point2[0]);
-        top = Math.max(point1[1], point2[1]);
-        bottom = top - 2/3*(right-left);
-        // bottom = top - height/width*(right-left);
+        if(point1[1] > point2[1]) {
+            top = point1[1];
+            bottom = top - 2/3*(right-left);
+        } else {
+            bottom = point1[1];
+            top = bottom + 2/3*(right-left);
+        }
         c.clearRect(0,0,width,height)
         o.clearRect(0,0,width,height)
         mandelbrot(imageData, width, height, left, right, top, bottom)
         c.putImageData(imageData,0,0);
         makeOverlay = false;
+    });
+
+    $('.mandelback').on('click', function() {
+        if(oldDims.length > 1) {
+            var dims = oldDims.pop();
+            left = dims.left, right = dims.right, top = dims.top, bottom = dims.bottom;
+            mandelbrot(imageData, width, height, left, right, top, bottom);
+            c.putImageData(imageData,0,0);
+        }
     });
 });
 
@@ -141,7 +166,6 @@ function RGBtoHSB(red, blue, green) {
     else if (Cmax === r) hue = 60 * ((g-b)/delta)%6;
     else if (Cmax === g) hue = 60 * ((b-r)/delta + 2);
     else hue = 60 * ((r-g)/delta + 4);
-    // var hue = delta === 0 ? 0 : Cmax === r ? 60 * ((g-b)/delta)%6 : Cmax === g ? 60 * (b-r)/delta + 2 : Cmax === b ? 60 * (r-g)/delta + 4;
     var saturation = Cmax === 0 ? 0 : delta/Cmax;
     var brightness = Cmax;
     return [hue, saturation, brightness];
@@ -153,13 +177,27 @@ function getXY(pixelX, pixelY, width, height, left, right, top, bottom) {
     return [x,y];
 }
 
-function setOverlay(overlayContext, pixel1, pixel2) {
-    overlayContext.clearRect(0,0,window.innerWidth,window.innerHeight);
-    //overlayContext.fillRect(pixel1[0], pixel1[1], pixel2[0]-pixel1[0], pixel2[1]-pixel1[1]);
+function getNewDims(pixel1, pixel2, width, height) {
     var left = Math.min(pixel1[0], pixel2[0]);
     var right = Math.max(pixel1[0], pixel2[0]);
-    var top = Math.max(pixel1[1], pixel2[1]);
-    var bottom = top - 2/3*(right-left);
-    // bottom = top - height/width*(right-left);
-    overlayContext.fillRect(left, top, right-left, bottom-top)
+    var top, bottom;
+    if(pixel1[1] > pixel2[1]) {
+        top = pixel1[1];
+        bottom = top - (right - left)*height/width;
+    } else {
+        bottom = pixel1[1];
+        top = bottom + (right - left)*height/width;
+    }
+    return {
+        left: left,
+        right: right,
+        top: top,
+        bottom: bottom
+    }
+}
+
+function setOverlay(overlayContext, pixel1, pixel2, width, height) {
+    overlayContext.clearRect(0,0,window.innerWidth,window.innerHeight);
+    var dims = getNewDims(pixel1, pixel2, width, height);
+    overlayContext.fillRect(dims.left, dims.top, dims.right-dims.left, dims.bottom-dims.top)
 }

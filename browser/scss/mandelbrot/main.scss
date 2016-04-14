@@ -11,3 +11,14 @@
     left: 0;
     top: 0;
 }
+
+.mandelback {
+    z-index: 2;
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    color: white;
+    opacity: 0.5;
+    font-size: 40px;
+    cursor: pointer;
+}
