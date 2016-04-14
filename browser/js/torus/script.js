@@ -65,7 +65,7 @@ $(document).ready(function() {
         camera.lookAt(toLook);
     }
 
-    var u = Math.random(), v = Math.random(), udot = .001 + Math.random()/1000, vdot = 1.25/400;
+    var u = Math.random(), v = Math.random(), udot = Math.random()/1000, vdot = 1.25/400;
 
     setCameraStuff(u,v,udot,vdot);
 
