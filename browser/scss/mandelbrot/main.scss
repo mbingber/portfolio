@@ -22,3 +22,12 @@
     font-size: 40px;
     cursor: pointer;
 }
+
+.mandel-instructions {
+    z-index: 2;
+    position: absolute;
+    top: 30px;
+    left: 80px;
+    color: white;
+    opacity: 0.5;
+}

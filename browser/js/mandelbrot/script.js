@@ -50,25 +50,28 @@ $(document).ready(function() {
 
     overlay.addEventListener('mouseup', function(event) {
         var point2 = getXY(event.pageX, event.pageY, width, height, left, right, top, bottom);
-        oldDims.push({
-            left: left,
-            right: right,
-            top: top,
-            bottom: bottom
-        });
-        left = Math.min(point1[0], point2[0]);
-        right = Math.max(point1[0], point2[0]);
-        if(point1[1] > point2[1]) {
-            top = point1[1];
-            bottom = top - 2/3*(right-left);
-        } else {
-            bottom = point1[1];
-            top = bottom + 2/3*(right-left);
+        if(Math.abs(pixel1[0]-event.pageX) > 5 || Math.abs(pixel1[1]-event.pageY > 5)) {
+            $('.mandel-instructions').hide();
+            oldDims.push({
+                left: left,
+                right: right,
+                top: top,
+                bottom: bottom
+            });
+            left = Math.min(point1[0], point2[0]);
+            right = Math.max(point1[0], point2[0]);
+            if(point1[1] > point2[1]) {
+                top = point1[1];
+                bottom = top - 2/3*(right-left);
+            } else {
+                bottom = point1[1];
+                top = bottom + 2/3*(right-left);
+            }
+            c.clearRect(0,0,width,height)
+            mandelbrot(imageData, width, height, left, right, top, bottom)
+            c.putImageData(imageData,0,0);
         }
-        c.clearRect(0,0,width,height)
         o.clearRect(0,0,width,height)
-        mandelbrot(imageData, width, height, left, right, top, bottom)
-        c.putImageData(imageData,0,0);
         makeOverlay = false;
     });
 
