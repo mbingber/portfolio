@@ -33,9 +33,9 @@ $(document).ready(function() {
 
     camera.position.copy(new THREE.Vector3(10,10,10));
     camera.lookAt(new THREE.Vector3(0,0,0));
-    var wave = wavefunction(L, 8, 2);
+    var wave = wavefunction(L, 8, 3);
     $(document).on('keypress', function() {
-        wave = wavefunction(L, 8, 2);
+        wave = wavefunction(L, 8, 3);
     })
     var count = 0;
   function animate() {
