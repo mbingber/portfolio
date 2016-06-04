@@ -46,7 +46,8 @@ gulp.task('buildJS', ['lintJS'], function () {
         '!./browser/js/gravity/script.js', '!./browser/js/dreamweaver/script.js',
         '!./browser/js/mandelbrot/script.js', '!./browser/js/klein/script.js',
         '!./browser/js/mathUtils.js', '!./browser/js/orbit-controls.js',
-        '!./browser/js/torus/script.js'])
+        '!./browser/js/torus/script.js', '!./browser/js/lightgrid/script.js',
+        '!./browser/js/lightgrid/particle_in_a_box.js', '!./browser/js/lightgrid/complex.js'])
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(concat('main.js'))
@@ -116,7 +117,8 @@ gulp.task('buildJSProduction', function () {
         '!./browser/js/gravity/script.js', '!./browser/js/dreamweaver/script.js',
         '!./browser/js/mandelbrot/script.js', '!./browser/js/klein/script.js',
         '!./browser/js/mathUtils.js', '!./browser/js/orbit-controls.js',
-        '!./browser/js/torus/script.js'])
+        '!./browser/js/torus/script.js', '!./browser/js/lightgrid/script.js',
+        '!./browser/js/lightgrid/particle_in_a_box.js', '!./browser/js/lightgrid/complex.js'])
         .pipe(concat('main.js'))
         .pipe(babel())
         .pipe(ngAnnotate())
