@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    var sphereGeom = new THREE.SphereGeometry(0.1, 10, 10);
+    var sphereGeom = new THREE.SphereGeometry(0.1, 6, 6);
     var material = new THREE.MeshBasicMaterial({color: 0x0000ff});
     var L = 12;
 

@@ -43,10 +43,18 @@ img {
   justify-content: center;
 }
 
-#dreamCanvas, .kleinCanvas, .torusCanvas, #gravityCanvas {
+#dreamCanvas, .kleinCanvas, .torusCanvas, #gravityCanvas, .imageCanvas {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.imageCanvas {
+  background-color: white;
+}
+
+#hiddenCanvas {
+  display: none;
 }
 
 footer {

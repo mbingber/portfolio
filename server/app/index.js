@@ -29,6 +29,11 @@ app.use(function (req, res, next) {
 
 });
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  next()
+})
+
 app.get('/*', function (req, res) {
     res.sendFile(app.get('indexHTMLPath'));
 });
