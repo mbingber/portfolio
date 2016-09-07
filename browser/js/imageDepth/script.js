@@ -1,3 +1,17 @@
+var sin = Math.sin;
+var cos = Math.cos;
+var tan = Math.tan;
+var sinh = Math.sinh;
+var cosh = Math.cosh;
+var pi = Math.PI;
+
+function VectorSph(r, theta, phi) {
+  var x = r*cos(phi)*sin(theta);
+  var y = r*sin(phi)*sin(theta);
+  var z = r*cos(theta);
+  return new THREE.Vector3(x,y,z);
+}
+
 function pixelAt(x, y, imageData) {
   var start = 4 * (y * imageData.width + x)
   return {
@@ -48,50 +62,57 @@ function reduceImage(imageData, targetPixels) {
   return result
 }
 
-function draw(ctx, reducedImage) {
-  var rows = reducedImage.length
-  var cols = reducedImage[0].length
-  var width, height
-  ctx.canvas.width = width = window.innerWidth
-  ctx.canvas.height = height = window.innerHeight
-  var spacing
-  if(width / height > cols / rows) {
-    spacing = height / rows
-  } else spacing = width / cols
-  reducedImage.forEach(function(row, i) {
-    row.forEach(function(pixel, j) {
-      ctx.fillStyle = `rgba(${pixel.r},${pixel.g},${pixel.b},${pixel.a})`
-      ctx.beginPath()
-      ctx.arc(spacing*j, spacing*i, 0.4*spacing, 0, 2*Math.PI)
-      ctx.fill()
-    })
-  })
-}
+// function draw(ctx, reducedImage) {
+//   var rows = reducedImage.length
+//   var cols = reducedImage[0].length
+//   var width, height
+//   ctx.canvas.width = width = window.innerWidth
+//   ctx.canvas.height = height = window.innerHeight
+//   var spacing
+//   if(width / height > cols / rows) {
+//     spacing = height / rows
+//   } else spacing = width / cols
+//   reducedImage.forEach(function(row, i) {
+//     row.forEach(function(pixel, j) {
+//       ctx.fillStyle = `rgba(${pixel.r},${pixel.g},${pixel.b},${pixel.a})`
+//       ctx.beginPath()
+//       ctx.arc(spacing*j, spacing*i, 0.4*spacing, 0, 2*Math.PI)
+//       ctx.fill()
+//     })
+//   })
+// }
 
-function draw3D(reducedImage, width, height) {
+function draw3D(reducedImage) {
+  var imageHeight = reducedImage.length
+  var imageWidth = reducedImage[0].length
+  console.log(imageHeight, imageWidth)
+
   var scene = new THREE.Scene()
-  // var camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  var width = window.innerWidth
-  var height = window.innerHeight
-  var camera = new THREE.OrthographicCamera( 2*width / - 2, 2*width / 2, 2*height / 2, 2*height / - 2, 1, 4000 );
-
   var renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
   $(renderer.domElement).addClass('imageCanvas');
   $('#main')[0].appendChild( renderer.domElement );
-  
+
+  var aspectRatio = window.innerWidth / window.innerHeight
+  var viewSize = 1.5*Math.max(imageHeight, imageWidth)
+  var camera = new THREE.OrthographicCamera( 
+    -aspectRatio*viewSize / 2, aspectRatio*viewSize / 2,
+    viewSize / 2, -viewSize / 2,
+    1, viewSize 
+  );
+
   var numPixels = reducedImage.length * reducedImage[0].length
   var positions = new Float32Array(numPixels * 3)
   var colors = new Float32Array(numPixels * 3)
 
-  var pointSize = 3
+  var pointSize = 1
   var spacing = 1
   var counter = 0
-  var xOffset = reducedImage[0].length * spacing / 2
-  var yOffset = reducedImage.length * spacing / 2
+  var xOffset = Math.round(reducedImage[0].length * spacing / 2)
+  var yOffset = Math.round(reducedImage.length * spacing / 2)
   reducedImage.forEach(function(row, y) {
     row.forEach(function(pixel, x) {
-      var z = 2*(pixel.r + pixel.g + pixel.b)
+      var z = ((pixel.r + pixel.g + pixel.b) / 3 / 255 - 0.5) * viewSize
       var position = new THREE.Vector3(spacing * x - xOffset, spacing * y - yOffset, z)
       position.toArray(positions, counter * 3)
       var color = new THREE.Color()
@@ -108,20 +129,41 @@ function draw3D(reducedImage, width, height) {
 
   var material = new THREE.PointsMaterial({
     vertexColors: THREE.VertexColors,
-    size: pointSize
+    size: pointSize,
+    sizeAttenuation: false
   })
 
   var particles = new THREE.Points(geometry, material)
   scene.add(particles)
 
-  camera.position.copy(new THREE.Vector3(0, 0, -1000))
+  var cameraR = -viewSize / 2
+  var thetaOffset = pi / 6
+  var phiOffset = pi / 8
+  camera.position.copy(VectorSph(cameraR, thetaOffset, phiOffset))
+  // camera.position.copy(new THREE.Vector3(0, 0, -viewSize / 2))
   camera.lookAt(new THREE.Vector3(0, 0, 0))
   camera.up = new THREE.Vector3(0, -1, 0)
 
   var controls = new THREE.OrbitControls( camera, renderer.domElement );
+  var clock = new THREE.Clock(true)
+
+  function easing(amplitude, period, time) {
+    return amplitude * (1 + cos(2*pi / period * time)) / 2
+  }
 
   function animate() {
     requestAnimationFrame( animate );
+    var time = clock.getElapsedTime()
+    // var newPositions = positions.map((coord, i) => {
+    //   if(i % 3 === 2) {
+    //     return (coord + 0.5*viewSize) * (1 + cos(time * 2 * pi / 5) ) / 2 - 0.5*viewSize
+    //   } else return coord
+    // })
+    // geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
+
+    var theta = easing(thetaOffset, 7, time)
+    var phi = easing(phiOffset, 7, time)
+    camera.position.copy(VectorSph(cameraR, theta, phi))
     controls.update();
     render();
   }
@@ -145,10 +187,10 @@ $(document).ready(function() {
     hiddenCtx.canvas.height = this.height
     hiddenCtx.drawImage(img, 0, 0)
     var imageData = hiddenCtx.getImageData(0, 0, this.width, this.height)
-    var reducedImage = reduceImage(imageData, 1500*1500)
+    var reducedImage = reduceImage(imageData, 100000)
     draw3D(reducedImage)
   }
 
-  img.src = "/innerspeaker.jpg"
+  img.src = "/ev.jpg"
 
 })
