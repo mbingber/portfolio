@@ -101,19 +101,25 @@ function draw3D(reducedImage) {
     1, viewSize 
   );
 
-  var numPixels = reducedImage.length * reducedImage[0].length
+  var numPixels = imageHeight * imageWidth
   var positions = new Float32Array(numPixels * 3)
   var colors = new Float32Array(numPixels * 3)
 
   var pointSize = 1
   var spacing = 1
   var counter = 0
-  var xOffset = Math.round(reducedImage[0].length * spacing / 2)
-  var yOffset = Math.round(reducedImage.length * spacing / 2)
-  reducedImage.forEach(function(row, y) {
-    row.forEach(function(pixel, x) {
-      var z = ((pixel.r + pixel.g + pixel.b) / 3 / 255 - 0.5) * viewSize
-      var position = new THREE.Vector3(spacing * x - xOffset, spacing * y - yOffset, z)
+  var scale = 0.3
+  var xLength = imageWidth * spacing
+  var yLength = imageHeight * spacing
+  var xOffset = Math.round(xLength / 2)
+  var yOffset = Math.round(yLength / 2)
+  reducedImage.forEach(function(row, yPos) {
+    row.forEach(function(pixel, xPos) {
+      // var z = scale*((pixel.r + pixel.g + pixel.b) / 3 / 255 - 0.5) * viewSize
+      var z = 0
+      var x = spacing * xPos - xOffset
+      var y = spacing * yPos - yOffset
+      var position = new THREE.Vector3(x, y, z)
       position.toArray(positions, counter * 3)
       var color = new THREE.Color()
       color.setRGB(pixel.r / 255, pixel.g / 255, pixel.b / 255)
@@ -139,33 +145,81 @@ function draw3D(reducedImage) {
   var cameraR = -viewSize / 2
   var thetaOffset = pi / 6
   var phiOffset = pi / 8
-  camera.position.copy(VectorSph(cameraR, thetaOffset, phiOffset))
-  // camera.position.copy(new THREE.Vector3(0, 0, -viewSize / 2))
+  // camera.position.copy(VectorSph(cameraR, thetaOffset, phiOffset))
+  camera.position.copy(new THREE.Vector3(0, 0, -viewSize / 2))
   camera.lookAt(new THREE.Vector3(0, 0, 0))
   camera.up = new THREE.Vector3(0, -1, 0)
 
   var controls = new THREE.OrbitControls( camera, renderer.domElement );
   var clock = new THREE.Clock(true)
 
-  function easing(amplitude, period, time) {
-    return amplitude * (1 + cos(2*pi / period * time)) / 2
+  // function easing(amplitude, period, time) {
+  //   return amplitude * (1 + cos(2*pi / period * time)) / 2
+  // }
+
+  function rippleDisplacement(x, y, xCenter, yCenter, timeElapsed, params) {
+    var r = Math.sqrt((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter))
+    var phase = params.k*r - params.omega*timeElapsed
+
+    // var sine = sin(phase)
+    // return phase < 0 ? params.A * sine*sine / (phase*phase) : 0
+    return params.A * cos(phase) / (Math.pow(params.k * r, 2) + 1 + params.omega * timeElapsed)
   }
+
+
+  var count = 0
+  var time
+
+  $(document).on('keypress', function() {
+    waves.push({
+      start: clock.getElapsedTime(),
+      center: {
+        x: (Math.random() - 0.5) * xLength,
+        y: (Math.random() - 0.5) * yLength
+      }
+    })
+  })
+
+  var waveParams = {
+    A: 400,
+    k: 2*pi / 100,
+    omega: 2*pi / 2
+  }
+
+  var waves = []
 
   function animate() {
     requestAnimationFrame( animate );
-    var time = clock.getElapsedTime()
+    time = clock.getElapsedTime()
+    if(waves.length) {
+      var newPositions = positions.map((coord, i) => {
+        if (i % 3 === 2) {
+          var x = positions[i-2]
+          var y = positions[i-1]
+          return waves.reduce((displacement, wave) => {
+            return displacement + rippleDisplacement(x, y, wave.center.x, wave.center.y, time - wave.start, waveParams)
+          }, 0)
+          // return rippleDisplacement(x, y, 0, 0, time - waveStartTime, waveParams)
+        } else return coord
+      })
+      geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
+    }
     // var newPositions = positions.map((coord, i) => {
     //   if(i % 3 === 2) {
-    //     return (coord + 0.5*viewSize) * (1 + cos(time * 2 * pi / 5) ) / 2 - 0.5*viewSize
+    //     var x = positions[i-2]
+    //     var y = positions[i-1]
+    //     // return coord + 10*(Math.random() - 0.5)
+    //     return (coord + 0.5*viewSize) * (1 + 0.3*cos(time * 2 * pi / 5) ) / 2 - 0.5*viewSize
     //   } else return coord
     // })
     // geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
 
-    var theta = easing(thetaOffset, 7, time)
-    var phi = easing(phiOffset, 7, time)
-    camera.position.copy(VectorSph(cameraR, theta, phi))
+    // var theta = easing(thetaOffset, 7, time)
+    // var phi = easing(phiOffset, 7, time)
+    // camera.position.copy(VectorSph(cameraR, theta, phi))
     controls.update();
     render();
+    count++;
   }
 
   function render() {
