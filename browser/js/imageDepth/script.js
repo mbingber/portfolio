@@ -190,7 +190,7 @@ function draw3D(reducedImage) {
 
   function animate() {
     requestAnimationFrame( animate );
-    time = clock.getElapsedTime()
+    // time = clock.getElapsedTime()
     // if(waves.length) {
     //   var newPositions = positions.map((coord, i) => {
     //     if (i % 3 === 2) {
@@ -213,9 +213,9 @@ function draw3D(reducedImage) {
     // })
     // geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
 
-    var theta = easing(thetaOffset, 10, time)
+    // var theta = easing(thetaOffset, 10, time)
     // var phi = easing(phiOffset, 10, time)
-    camera.position.copy(VectorSph(cameraR, theta, pi/10))
+    // camera.position.copy(VectorSph(cameraR, theta, pi/10))
     controls.update();
     render();
     // count++;
