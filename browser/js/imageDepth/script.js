@@ -105,18 +105,18 @@ function draw3D(reducedImage) {
   var positions = new Float32Array(numPixels * 3)
   var colors = new Float32Array(numPixels * 3)
 
-  var pointSize = 1
+  var pointSize = 1.5
   var spacing = 1
   var counter = 0
-  var scale = 0.3
+  var scale = 0.7
   var xLength = imageWidth * spacing
   var yLength = imageHeight * spacing
   var xOffset = Math.round(xLength / 2)
   var yOffset = Math.round(yLength / 2)
   reducedImage.forEach(function(row, yPos) {
     row.forEach(function(pixel, xPos) {
-      // var z = scale*((pixel.r + pixel.g + pixel.b) / 3 / 255 - 0.5) * viewSize
-      var z = 0
+      var z = scale*((pixel.r + pixel.g + pixel.b) / 3 / 255 - 0.5) * viewSize
+      // var z = 0
       var x = spacing * xPos - xOffset
       var y = spacing * yPos - yOffset
       var position = new THREE.Vector3(x, y, z)
@@ -153,57 +153,56 @@ function draw3D(reducedImage) {
   var controls = new THREE.OrbitControls( camera, renderer.domElement );
   var clock = new THREE.Clock(true)
 
-  // function easing(amplitude, period, time) {
-  //   return amplitude * (1 + cos(2*pi / period * time)) / 2
+  function easing(amplitude, period, time) {
+    return amplitude * (1 + cos(2*pi / period * time)) / 2
+  }
+
+  // function rippleDisplacement(x, y, xCenter, yCenter, timeElapsed, params) {
+  //   var r = Math.sqrt((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter))
+  //   var phase = params.k*r - params.omega*timeElapsed
+
+  //   // var sine = sin(phase)
+  //   // return phase < 0 ? params.A * sine*sine / (phase*phase) : 0
+  //   return params.A * cos(phase) / (Math.pow(params.k * r, 2) + 1 + params.omega * timeElapsed)
   // }
 
-  function rippleDisplacement(x, y, xCenter, yCenter, timeElapsed, params) {
-    var r = Math.sqrt((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter))
-    var phase = params.k*r - params.omega*timeElapsed
 
-    // var sine = sin(phase)
-    // return phase < 0 ? params.A * sine*sine / (phase*phase) : 0
-    return params.A * cos(phase) / (Math.pow(params.k * r, 2) + 1 + params.omega * timeElapsed)
-  }
-
-
-  var count = 0
+  // var count = 0
   var time
 
-  $(document).on('keypress', function() {
-    waves.push({
-      start: clock.getElapsedTime(),
-      center: {
-        x: (Math.random() - 0.5) * xLength,
-        y: (Math.random() - 0.5) * yLength
-      }
-    })
-  })
+  // $(document).on('keypress', function() {
+  //   waves.push({
+  //     start: clock.getElapsedTime(),
+  //     center: {
+  //       x: (Math.random() - 0.5) * xLength,
+  //       y: (Math.random() - 0.5) * yLength
+  //     }
+  //   })
+  // })
 
-  var waveParams = {
-    A: 400,
-    k: 2*pi / 100,
-    omega: 2*pi / 2
-  }
+  // var waveParams = {
+  //   A: 200,
+  //   k: 2*pi / 100,
+  //   omega: 2*pi / 2
+  // }
 
   var waves = []
 
   function animate() {
     requestAnimationFrame( animate );
     time = clock.getElapsedTime()
-    if(waves.length) {
-      var newPositions = positions.map((coord, i) => {
-        if (i % 3 === 2) {
-          var x = positions[i-2]
-          var y = positions[i-1]
-          return waves.reduce((displacement, wave) => {
-            return displacement + rippleDisplacement(x, y, wave.center.x, wave.center.y, time - wave.start, waveParams)
-          }, 0)
-          // return rippleDisplacement(x, y, 0, 0, time - waveStartTime, waveParams)
-        } else return coord
-      })
-      geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
-    }
+    // if(waves.length) {
+    //   var newPositions = positions.map((coord, i) => {
+    //     if (i % 3 === 2) {
+    //       var x = positions[i-2]
+    //       var y = positions[i-1]
+    //       return waves.reduce((displacement, wave) => {
+    //         return displacement + rippleDisplacement(x, y, wave.center.x, wave.center.y, time - wave.start, waveParams)
+    //       }, coord)
+    //     } else return coord
+    //   })
+    //   geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
+    // }
     // var newPositions = positions.map((coord, i) => {
     //   if(i % 3 === 2) {
     //     var x = positions[i-2]
@@ -214,12 +213,12 @@ function draw3D(reducedImage) {
     // })
     // geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
 
-    // var theta = easing(thetaOffset, 7, time)
-    // var phi = easing(phiOffset, 7, time)
-    // camera.position.copy(VectorSph(cameraR, theta, phi))
+    var theta = easing(thetaOffset, 7, time)
+    var phi = easing(phiOffset, 7, time)
+    camera.position.copy(VectorSph(cameraR, theta, phi))
     controls.update();
     render();
-    count++;
+    // count++;
   }
 
   function render() {
@@ -245,6 +244,6 @@ $(document).ready(function() {
     draw3D(reducedImage)
   }
 
-  img.src = "/ev.jpg"
+  img.src = "/deenas_painting.jpg"
 
 })
