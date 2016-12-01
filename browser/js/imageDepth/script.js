@@ -213,9 +213,9 @@ function draw3D(reducedImage) {
     // })
     // geometry.addAttribute('position', new THREE.BufferAttribute(newPositions, 3))
 
-    var theta = easing(thetaOffset, 7, time)
-    var phi = easing(phiOffset, 7, time)
-    camera.position.copy(VectorSph(cameraR, theta, phi))
+    var theta = easing(thetaOffset, 10, time)
+    // var phi = easing(phiOffset, 10, time)
+    camera.position.copy(VectorSph(cameraR, theta, pi/10))
     controls.update();
     render();
     // count++;
