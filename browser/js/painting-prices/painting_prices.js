@@ -10,7 +10,7 @@ app.controller('PaitingCtrl', function($scope) {
   $scope.method = 'area';
   // $scope.method = 'side'
 
-  $scope.output = {};
+  $scope.outputs = [{}];
 
   $scope.training = [
     {
@@ -50,6 +50,10 @@ app.controller('PaitingCtrl', function($scope) {
       x: $scope.method === 'area' ? area : Math.sqrt(area),
       y: 0.5 * (example.lower + upper)
     };
+  }
+
+  $scope.addRow = function() {
+    $scope.outputs.push({});
   }
 
 });

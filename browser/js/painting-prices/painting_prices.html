@@ -5,9 +5,12 @@
   </div>
   <div>
     <p class="and">THEN</p>
-    <div class="in">
-      A <input class="inch" type="number" ng-model="output.height">" by <input type="number" class="inch" ng-model="output.width">" painting should cost approximately <span class="answer">${{ getPrice(output) }}</span>
+    <div class="out">
+      <div class="in" ng-repeat="output in outputs">
+        A <input class="inch" type="number" ng-model="output.height">" by <input type="number" class="inch" ng-model="output.width">" painting should cost approximately <span class="answer">${{ getPrice(output) }}</span>
+      </div>
     </div>
+    <button ng-click="addRow()" class="btn btn-primary">Add row</button>
   </div>
   <hr>
   <p class="radio">Price should be based off of:</p>
