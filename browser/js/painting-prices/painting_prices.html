@@ -1,0 +1,20 @@
+<div id="painting-prices">
+  <div class="in" ng-repeat="example in training">
+    <p class="and" ng-if="$index">AND</p>
+    If a <input class="inch" type="number" ng-model="example.height">" by <input type="number" class="inch" ng-model="example.width">" painting costs $<input type="number" class="dollar" ng-model="example.lower"> - $<input type="number" class="dollar" ng-model="example.upper">
+  </div>
+  <div>
+    <p class="and">THEN</p>
+    <div class="in">
+      A <input class="inch" type="number" ng-model="output.height">" by <input type="number" class="inch" ng-model="output.width">" painting should cost approximately <span class="answer">${{ getPrice(output) }}</span>
+    </div>
+  </div>
+  <hr>
+  <p class="radio">Price should be based off of:</p>
+  <div class="radio">
+    <input ng-model="method" type="radio" value="area">Area
+  </div>
+  <div class="radio">
+    <input ng-model="method" type="radio" value="side">Side
+  </div>
+</div>
