@@ -32,39 +32,30 @@ function drawSquare(sideLength, center, numPolys, angle) {
 	s.size = [sideLength, sideLength];
 	s.center = center;
 
-	var square = new Group();
+	var poly = new Path();
 	for(var i = 0; i < numPolys; i += 2) {
-		var poly = new Path();
 		poly.add(s.topLeft);
 		poly.add(armPoint(s, numPolys, i));
 		poly.add(s.bottomRight);
 		poly.add(armPoint(s, numPolys, i+1));
 		poly.closed = true;
-		poly.fillColor = 'black';
-		square.addChild(poly);
 	}
-	square.rotate(angle);
-	return square;
+	poly.fillColor = 'black';
+	poly.rotate(angle);
+	return poly;
 }
 
-function getIntersection(group1, group2) {
-	var intersection = new Group();
-	group1.children.forEach(function(path1) {
-		group2.children.forEach(function(path2) {
-			if (!path1.intersect || !path2.intersect) return;
-			var subInt = path1.intersect(path2);
-			if (subInt.area) intersection.addChild(subInt);
-		});
-	});
-	return intersection;
-}
+var square1 = drawSquare(300, view.center, 7, 30);
+var square2 = drawSquare(300, view.center + new Point(150, 0), 11, 100);
 
-var square1 = drawSquare(300, view.center, 17, 30);
-var square2 = drawSquare(300, view.center + new Point(150, 0), 15, 100);
-
-var intersection = getIntersection(square1, square2);
+var intersectionLayer = new Layer();
+var intersection = square1.intersect(square2);
 intersection.fillColor = 'white';
+intersectionLayer.addChild(intersection);
+intersectionLayer.bringToFront();
 
 function onFrame() {
 	// square2.rotate(0.25);
+	// intersection = square1.intersect(square2);
+	// intersection.fillColor = 'white';
 }
