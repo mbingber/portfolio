@@ -48,7 +48,7 @@ gulp.task('buildJS', ['lintJS'], function () {
         '!./browser/js/mathUtils.js', '!./browser/js/orbit-controls.js',
         '!./browser/js/torus/script.js', '!./browser/js/lightgrid/script.js',
         '!./browser/js/lightgrid/particle_in_a_box.js', '!./browser/js/lightgrid/complex.js',
-        '!./browser/js/imageDepth/script.js'])
+        '!./browser/js/imageDepth/script.js', '!./browser/js/checkerboard/script.js'])
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(concat('main.js'))
@@ -120,7 +120,7 @@ gulp.task('buildJSProduction', function () {
         '!./browser/js/mathUtils.js', '!./browser/js/orbit-controls.js',
         '!./browser/js/torus/script.js', '!./browser/js/lightgrid/script.js',
         '!./browser/js/lightgrid/particle_in_a_box.js', '!./browser/js/lightgrid/complex.js',
-        '!./browser/js/imageDepth/script.js'])
+        '!./browser/js/imageDepth/script.js', '!./browser/js/checkerboard/script.js'])
         .pipe(concat('main.js'))
         .pipe(babel())
         .pipe(ngAnnotate())
