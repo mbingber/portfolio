@@ -67,24 +67,82 @@ function randomPoint() {
 }
 
 function randomVelocity() {
-	return Point.random() * 5;
+	return new Point(2, 2) + Point.random() * 2;
 }
 
 function randomSpin() {
-	return Math.random() * 0.6;
+	return 0.1 + Math.random() * 0.3;
 }
 
-var square1 = drawSquare(400, randomPoint(), randomVelocity(), randomSpin(), 5, 30);
-var square2 = drawSquare(300, randomPoint(), randomVelocity(), randomSpin(), 9, 100);
+// function forEachPair(group, iterator) {
+// 	for(var i = 0; i < group.children.length; i++) {
+// 		for(var j = i+1; j < group.children.length; j++) {
+// 			iterator(group.children[i], group.children[j], i, j, group);
+// 		}
+// 	}
+// }
 
-var squares = [square1, square2];
+// function mergeMembers(intersections) {
+// 	var merged = {};
+// 	intersections.forEach(function (int) {
+// 		Object.keys(int.members).forEach(function(m) {
+// 			merged[m] = true;
+// 		});
+// 	});
+// 	return merged;
+// }
+
+// function generateLayers(squares) {
+// 	var layers = [];
+// 	for(var layerIdx = 0; layerIdx < squares.length; layerIdx++) {
+// 		var layer = new Layer();
+// 		if (!layerIdx) {
+// 			squares.forEach(function(square, i) {
+// 				square.members = {};
+// 				square.members[i] = true;
+// 				layer.addChild(square);
+// 			});
+
+// 		} else {
+// 			var prevLayer = layers[layerIdx - 1];
+// 			if (layerIdx === 1) {
+// 				forEachPair(squares, function(s1, s2) {
+// 					if(s1.bounds.intersects(s2.bounds)) {
+// 						var intPath = s1.intersect(s2);
+// 						if (!intPath.area) return;
+// 						intPath.members = mergeMembers([s1, s2]);
+						
+// 						layer.addChild(intPath);
+// 					}
+// 				})
+// 			} else {
+
+// 			}
+// 			layer.moveAbove(prevLayer);
+// 		}
+// 		layer.fillColor = layerIdx % 2 ? 'white' : 'black';
+// 	}
+// }
+
+var bigSquare = drawSquare(450, randomPoint(), randomVelocity(), randomSpin(), 9, 30);
+var smallSquare = drawSquare(350, randomPoint(), randomVelocity(), randomSpin(), 7, 100);
+
+var squares = [bigSquare, smallSquare];
 
 var intersection = new Path();
+
+var color = {
+	gradient: {
+		stops: ['blue', 'yellow', 'red']
+	},
+	origin: new Point(0, 0),
+	destination: new Point(1, 1) * view.size
+}
 
 function onFrame(e) {
 	if (e.count % 2) return;
 	squares.forEach(evolve);
 	intersection.remove();
-	intersection = square1.intersect(square2);
+	intersection = bigSquare.intersect(smallSquare);
 	intersection.fillColor = 'white';
 }
